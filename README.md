@@ -3,7 +3,7 @@
 
 
 Hello everyone!
-Here you can found simple Sharepoint site extended by some process management features.
+Here you can find simple Sharepoint site extended by some process management features.
 <h3>How to implement:</h3>
 
 <b>Option A</b>
@@ -14,9 +14,9 @@ This is the simplest way to deploy solution.
 
 <b>Option B</b>
 1. Open your existing site by Sharepoint designer or by windows explorer.
-2. Create 2 new root folders (or be sure they already exist):
- - SitePages
- - Scripts
+2. Create 2 new root folders (or be sure they already exist):<br/>
+ - SitePages<br/>
+ - Scripts<br/>
  Upload to folders all files from corresponding folders of this project.
 3. Set up all list and libraries required (link)
  This way is the best when:
