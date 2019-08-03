@@ -2,7 +2,7 @@
 <h2>Sharepoint collaboration site with bpmn.io toolset</h2>
 
 
-Hello evereone!
+Hello everyone!
 Here you can found simple Sharepoint site extended by some process management features.
 <h3>How to implement:</h3>
 
