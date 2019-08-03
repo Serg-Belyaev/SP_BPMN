@@ -27,7 +27,7 @@ This is the simplest way to deploy solution.
  1) Manage processes list: create, modify, delete processes record. Restrict permissions to processes <br/>
  2) Navigate processes with tree view with ease search powered by <a href = 'https://github.com/mar10/fancytree'>fancy tree</a><br/>
  3) Create diagrams files in Business Process Management Notation (BPMN) 2.0 by a great <a href = 'https://camunda.com/products/modeler/'>Camunda Modeller</a> (or any other soft with BPMN 2.0 support).
- Use all Sharepoint built-in features such as versions, permissions, fields, organising on folders, opening in windows explorer and others.<br/>
+ Use all Sharepoint built-in features such as versions, permissions, fields, organizing with folders, opening in windows explorer and others.<br/>
  4) Web view for any diagram file in BPMN 2.0 format powered by superb <a href = 'https://github.com/bpmn-io'> bpmn.io project</a>.<br/>
  Easy navigation in large diagram: scroll, zoom and move canvas by mouse.<br/>
  5) Comment any diagram element, start discussion and get an answer<br/>
