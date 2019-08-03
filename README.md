@@ -9,7 +9,7 @@ Here you can find simple Sharepoint site extended by some process management fea
 <b>Option A</b>
 1. Download wsp-file - this is Sharepoint 2019 package. 
 2. Upload it to your solution gallery (/_catalogs/solutions/) and activate
-3. Create new site by using new custom BPMSP-template
+3. Create new site by using new custom BPMSP-template <br/>
 This is the simplest way to deploy solution.
 
 <b>Option B</b>
