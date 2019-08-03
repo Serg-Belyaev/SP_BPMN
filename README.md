@@ -19,6 +19,7 @@ This is the simplest way to deploy solution.
  - Scripts <br/>
  Upload to the folders all files from corresponding folders of this project.
 3. Set up all list and libraries required (link)<br/>
+<br/>
  This way is the best when:<br/>
  A) You already have a site with useful content and you want to extend it for process management<br/>
  B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.<br/>
