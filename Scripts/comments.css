@@ -1,0 +1,89 @@
+.ic-sidebar {
+    clear: both;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+}
+.ic-sidebar>div {
+    width: 280px;
+    max-width: 280px;
+}
+
+.ic-comment-container {
+    border-left: 4px solid #f6c342;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.ic-author {
+    font-weight: bold;
+    padding-top: 10px;
+    line-height: 24px;
+    vertical-align: middle;
+}
+
+.ic-sidebar .ic-sidebar-heading {
+    position: relative;
+    margin: 10px 17px 0 17px;
+    background-color: white;
+    height: 16px;
+}
+
+#ic-nav-container {
+    display: inline-block;
+    color: #707070;
+}
+
+.aui-button.aui-button-text, .aui-button.aui-button-text:visited {
+    border: none;
+    font-size: inherit;
+    height: inherit;
+    line-height: normal;
+    padding: 0;
+}
+
+.ic-sidebar .ic-sidebar-heading .ic-right-toolbar {
+    float: right;
+    margin-top: -4px;
+    margin-right: -3px;
+}
+
+.ic-display-comment-view .ic-display-comment {
+    margin: 0 18px 0 17px;
+}
+
+.ic-display-comment-view .ic-display-comment {
+    margin: 0 18px 0 17px;
+}
+
+.ic-display-comment-view .ic-body {
+    margin: 5px 0 0 0;
+}
+
+.ic-display-comment-view .ic-comment-container .ic-actions {
+    margin-bottom: 10px;
+}
+
+.ic-actions {
+    line-height: 16px;
+    margin-top: 10px;
+}
+.ic-actions ul {
+    width: 100%;
+    display: inline;
+    padding: 0;
+}
+.ic-actions .aui-button.aui-button-link {
+    color: #707070;
+    padding: 0;
+    border: none;
+}
+.ic-author .url {
+    display: inline-block;
+    max-width: 212px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
