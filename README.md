@@ -16,12 +16,12 @@ This is the simplest way to deploy solution.
 1. Open your existing site by Sharepoint designer or by windows explorer.
 2. Create 2 new root folders (or be sure they already exist):<br/>
  - SitePages<br/>
- - Scripts<br/>
- Upload to folders all files from corresponding folders of this project.
-3. Set up all list and libraries required (link)
- This way is the best when:
- A) You already have a site with useful content and you want to extend it for process management
- B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.
+ - Scripts <br/>
+ Upload to the folders all files from corresponding folders of this project.
+3. Set up all list and libraries required (link)<br/>
+ This way is the best when:<br/>
+ A) You already have a site with useful content and you want to extend it for process management<br/>
+ B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.<br/>
  
  <h3>Features and abilities:</h3>
  1) Manage processes list: create, modify, delete processes record. Restrict permissions to processes <br/>
