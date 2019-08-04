@@ -22,7 +22,8 @@ This is the simplest way to deploy solution.
 <br/>
  This way is the best when:<br/>
  A) You already have a site with useful content and you want to extend it for process management<br/>
- B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.<br/>
+ B) You don't have administrative privileges in target Sharepoint-farm ;) <br/>
+ This solutuon uses only client-side code, so you don't need to deploy server-side code to Sharepoint servers.<br/>
  
  <h3>Features and abilities:</h3>
  1) Manage processes list: create, modify, delete processes record. Restrict permissions to processes <br/>
@@ -34,10 +35,10 @@ This is the simplest way to deploy solution.
  5) Comment any diagram element, start discussion and get an answer<br/>
  6) Create 6 diffirent types diagrams for a process:<br/>
  - AS IS descriptive<br/>
- - AS IS analityc<br/>
+ - AS IS analytic<br/>
  - AS IS executable<br/>
  - TO BE descriptive<br/>
- - TO BE analityc<br/>
+ - TO BE analytic<br/>
  - TO BE executable<br/>
  7) Publish process description in wiki-page and link it to process item<br/>
  8) Publish a diagram in any notations (EPC, IDEF or others) as a picture<br/>
