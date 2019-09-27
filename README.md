@@ -18,12 +18,11 @@ This is the simplest way to deploy solution.
  - SitePages<br/>
  - Scripts <br/>
  Upload to the folders all files from corresponding folders of this project.
-3. Set up all list and libraries required (link)<br/>
+3. Set up all list and libraries <a href = "Requirements.md"> required </a><br/>
 <br/>
  This way is the best when:<br/>
  A) You already have a site with useful content and you want to extend it for process management<br/>
- B) You don't have administrative privileges in target Sharepoint-farm ;) <br/>
- This solutuon uses only client-side code, so you don't need to deploy server-side code to Sharepoint servers.<br/>
+ B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.<br/>
  
  <h3>Features and abilities:</h3>
  1) Manage processes list: create, modify, delete processes record. Restrict permissions to processes <br/>
@@ -35,16 +34,14 @@ This is the simplest way to deploy solution.
  5) Comment any diagram element, start discussion and get an answer<br/>
  6) Create 6 diffirent types diagrams for a process:<br/>
  - AS IS descriptive<br/>
- - AS IS analytic<br/>
+ - AS IS analityc<br/>
  - AS IS executable<br/>
  - TO BE descriptive<br/>
- - TO BE analytic<br/>
+ - TO BE analityc<br/>
  - TO BE executable<br/>
  7) Publish process description in wiki-page and link it to process item<br/>
  8) Publish a diagram in any notations (EPC, IDEF or others) as a picture<br/>
  9) Extend your BPMN-elements by external or internal links. For example, draw a document artifact and link it your company's policy published inside Intranet<br/>
  10) Be informed with whats' new widget<br/>
  
-<img src = "https://github.com/Serg-Belyaev/SP_BPMN/blob/master/imgs/Screen_1.png" /> <br/>
-<img src = "https://github.com/Serg-Belyaev/SP_BPMN/blob/master/imgs/Screen_2.png" /> <br/>
-
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/blob/master/img/Screen_1.png" />
