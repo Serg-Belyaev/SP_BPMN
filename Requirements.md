@@ -15,15 +15,17 @@
 - Schema_as_is_e - lookup to bpmn-schemas library (concerned as executable "as is"").<br/>
 - DescriptionWiki - lookup to wikiLibName with description page.<br/>
 
-<b>BPMN</b> (var schemasListName) - internal name of sharepoint library for BPMN 2.0 files. The list must have the only required fields (internal names, case sensitive): Status - single-line text<br/>
-<b>Disc</b> (var discussionsListName) - internal name of sharepoint discussion board for hosting comments. The list schema must meet the following criteria:<br/>
+<b>BPMN</b> (var schemasListName) - internal name of sharepoint library for BPMN 2.0 files. The list must have the only required fields (internal names, case sensitive): Status - single-line text. <br/>
+
+<b>Disc</b> (var discussionsListName) - internal name of sharepoint discussion board for hosting comments.<br/>
 Discussion list is a standard Sharepoint discussion board with:<br/>
 - content types: discussions, messages.<br/>
 - flat view is represented by Flat.aspx page<br/>
 The discussion content type have additional fields:<br/>
 - element_id - single line text. The field hosts element id from BPMN-schema.<br/>
 - process_id - single line text. The field hosts process id from Process list.<br/>
-<b> Wiki <b> (var wikiLibName) - internal name of sharepoint wiki-library with process descriptions pages. No special requirements.<br/>
+
+<b> Wiki </b> (var wikiLibName) - internal name of sharepoint wiki-library with process descriptions pages. No special requirements.<br/>
 
 <h2> How to test</h2><br/>
 After setting all lists and fields:<br/>
@@ -34,5 +36,5 @@ Do not forget to set Title field.<br/>
 -	Parent. Use blank for root processes<br/>
 -	Use one of lookup fields to link the record with bpmn-file from previous step.<br/>
 -	Set ProcessType to Process or Group.<br/>
-If this record is really the first item in ProcessesList the ID will be 1 after saving, else get the ID of it from display form or view with ID column.<br/>
+If this record is really the first item in ProcessesList ID will be 1 after saving, else get the ID of it from display form or view with ID column.<br/>
 3.	Open link http://portal/site/web/subweb/SitePages/app.aspx?IDdoc=1 <br/>
