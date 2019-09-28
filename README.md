@@ -16,7 +16,8 @@ Here you can find simple Sharepoint site extended by some process management fea
 <br/>
 This is the simplest way to deploy solution.
 <br/>
-<b>Option B</b>
+<br/>
+<b>Option B</b><br/>
 1. Open your existing site by Sharepoint designer or by windows explorer.
 2. Create 2 new root folders (or be sure they already exist):<br/>
  - SitePages<br/>
@@ -51,7 +52,7 @@ This is the simplest way to deploy solution.
 <img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_2.png" />
 
 <h3>Soon:</h3>
-1) Edit schemas directly in browser
-2) Mini-map for big schemas
+1) Edit schemas directly in browser<br/>
+2) Mini-map for big schemas<br/>
 
 
