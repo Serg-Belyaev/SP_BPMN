@@ -15,7 +15,7 @@ Here you can find simple Sharepoint site extended by some process management fea
 3. Create new site by using new custom BPMSP-template <br/>
 <br/>
 This is the simplest way to deploy solution.
-
+<br/>
 <b>Option B</b>
 1. Open your existing site by Sharepoint designer or by windows explorer.
 2. Create 2 new root folders (or be sure they already exist):<br/>
@@ -45,9 +45,13 @@ This is the simplest way to deploy solution.
  - TO BE executable<br/>
  7) Publish process description in wiki-page and link it to process item<br/>
  8) Publish a diagram in any notations (EPC, IDEF or others) as a picture<br/>
- 9) Extend your BPMN-elements by external or internal links. For example, draw a document artifact and link it your company's policy published inside Intranet<br/>
+ 9) Extend your BPMN-elements by external or internal links. For example, draw a document artifact and link it to your Intranet web-resource <br/>
  10) Be informed with whats' new widget<br/>
  
 <img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_2.png" />
+
+<h3>Soon:</h3>
+1) Edit schemas directly in browser
+2) Mini-map for big schemas
 
 
