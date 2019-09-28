@@ -10,6 +10,7 @@ Here you can find simple Sharepoint site extended by some process management fea
 1. Download wsp-file - this is Sharepoint 2019 package. 
 2. Upload it to your solution gallery (/_catalogs/solutions/) and activate
 3. Create new site by using new custom BPMSP-template <br/>
+<br/>
 This is the simplest way to deploy solution.
 
 <b>Option B</b>
@@ -44,4 +45,6 @@ This is the simplest way to deploy solution.
  9) Extend your BPMN-elements by external or internal links. For example, draw a document artifact and link it your company's policy published inside Intranet<br/>
  10) Be informed with whats' new widget<br/>
  
-<img src = "https://github.com/Serg-Belyaev/SP_BPMN/blob/master/img/Screen_1.png" />
+<img src = "img/Screen_1.png" />
+
+<img src = "img/Screen_2.png" />
