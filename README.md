@@ -4,6 +4,9 @@
 
 Hello everyone!
 Here you can find simple Sharepoint site extended by some process management features.
+</br>
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_1.png" />
+
 <h3>How to implement:</h3>
 
 <b>Option A</b>
@@ -47,4 +50,4 @@ This is the simplest way to deploy solution.
  
 <img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_2.png" />
 
-<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_1.png" />
+
