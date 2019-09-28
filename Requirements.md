@@ -38,9 +38,12 @@ Do not forget to set Title field.<br/>
 -	Set ProcessType to Process or Group.<br/>
 If this record is really the first item in ProcessesList ID will be 1 after saving, else get the ID of it from display form or view with ID column.<br/>
 3.	Open link http://portal/site/web/subweb/SitePages/app.aspx?IDdoc=1 <br/>
-4. To create links inside schema:
-- open BPMN-file via desktop Camunda modeler
-- select schema element
-- add to element properties a new property:
-	A) with name "url", if you want to add just a web-url
-	B) with name "process_id", if you want to add link to another existing process in your process library
+4. To create links inside schema:<br/>
+- open BPMN-file via desktop Camunda modeler<br/>
+- select schema element<br/>
+- add to element properties a new property:<br/>
+	A) with name "url", if you want to add just a web-url<br/>
+	B) with name "process_id", if you want to add link to another existing process in your process library<br/>
+<br/>
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_3.png" /><br/>
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_4.png" /><br/>
