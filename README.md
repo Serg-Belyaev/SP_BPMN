@@ -45,6 +45,6 @@ This is the simplest way to deploy solution.
  9) Extend your BPMN-elements by external or internal links. For example, draw a document artifact and link it your company's policy published inside Intranet<br/>
  10) Be informed with whats' new widget<br/>
  
-<img src = "img/Screen_1.png" />
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_2.png" />
 
-<img src = "img/Screen_2.png" />
+<img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_1.png" />
