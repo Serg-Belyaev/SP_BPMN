@@ -30,7 +30,7 @@ This is the simplest way to deploy solution.
  B) You don't have administrative privileges in target Sharepoint-farm ;) This solutuon uses only client-side code, so you don't need to have access to Sharepoint servers.<br/>
  
  <h3>Features and abilities:</h3>
- 1) Manage processes list: create, modify, delete processes record. Restrict permissions to processes <br/>
+ 1) Manage processes list: create, modify, delete processes records. Restrict permissions to processes <br/>
  2) Navigate processes with tree view with ease search powered by <a href = 'https://github.com/mar10/fancytree'>fancy tree</a><br/>
  3) Create diagrams files in Business Process Management Notation (BPMN) 2.0 by a great <a href = 'https://camunda.com/products/modeler/'>Camunda Modeller</a> (or any other soft with BPMN 2.0 support).
  Use all Sharepoint built-in features such as versions, permissions, fields, organizing with folders, opening in windows explorer and others.<br/>
