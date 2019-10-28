@@ -37,7 +37,8 @@ This is the simplest way to deploy solution.
  4) Web view for any diagram file in BPMN 2.0 format powered by superb <a href = 'https://github.com/bpmn-io'> bpmn.io project</a>.<br/>
  Easy navigation in large diagram: scroll, zoom and move canvas by mouse.<br/>
  5) Comment any diagram element, start discussion and get an answer<br/>
- 6) Create and Edit schemas directly in browser<br/>
+ 6) Create and edit schemas directly in browser in full-screen mode:<br/>
+ <img src = "https://github.com/Serg-Belyaev/SP_BPMN/raw/master/imgs/Screen_5.png" /><br/>
  7) Use mini-map for navigation in big schemas<br/>
  8) Create 6 diffirent types diagrams for a process:<br/>
  - AS IS descriptive<br/>
