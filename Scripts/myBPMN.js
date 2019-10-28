@@ -37,6 +37,7 @@ var wikiLibName = "Wiki";//the internal name of sharepoint wiki-library with pro
 //Other global vars:
 
 var bpmnViewer; //BPMN-Viewer object. Get value from drawSchema();
+var bpmnModeler; //BPMN-Viewer object/ Get value from bpmn-custom-modeler.js
 var overlays; //BPMN-object for overlays
 var comments = []; //array of comment. Get value from getComments();
 var commentedElements = ""; //string of bpmn-elements id, which are already commented by users
@@ -92,12 +93,25 @@ var process = { //object for current displaying process
     }
 }
 
+var schemasTypes= [ //TODO: change to process.schemas
+        "to_be_descriptive_id",
+        "to_be_analytic_id",
+        "to_be_executable_id",
+        "as_is_descriptive_id",
+        "as_is_analytic_id",
+        "as_is_executable_id"
+    ];
+
 var processesStructure = []; //TODO: how to manage the display order?
+
+//******** URL **************//
 var processPicUrl ="../scripts/images/process.gif"; //
 var groupPicUrl = "/_layouts/15/images/folder.gif?rev=23"; //invariant for all Sharepoint sites
 var serviceURL;// Lists.asmx web-service url like "http://portal/site/web/_vti_bin/Lists.asmx"; 
+var copyServiceUrl; //Copy.asmx web-service url like "http://portal/site/web/_vti_bin/Copy.asmx"
 var appUrl;//the url of web application
 var flatViewUrl;// = "../Lists/Disc/Flat.aspx";//
+var libraryRootFolderUrl; //where created schemas will be located
 
 var schema = { //host object for current schema parameters
     id: null, //file ID in SP Lib
@@ -106,6 +120,7 @@ var schema = { //host object for current schema parameters
     DescriptionUrl: null, //full path to sharepoint wiki page with description. Not ready yet
     Status: null //displaying schema status
 }
+var schemasTitleDisplayName; 
 
 var tracePerf = false; //switch on/off preformance tracking
 
@@ -115,9 +130,7 @@ var cache_TTL_days = 10; //Time to live for cache recorded data (in days)
 var loadedFromCache = false;
 var UID = "123";
 
-
 //START HERE
-
 $( document ).ready(function() {
     if (tracePerf) var startTime = Date.now();
     //Fixing attachEvent error in IE11 and SharePoint 2013:
@@ -416,7 +429,7 @@ function prepareProcessesTree() {
 function prepareHtmlBefore(){ //before drawing tree, process and schema
     
     //$("#zz14_V4QuickLaunchMenu").hide();
-    $("#s4-ribbonrow").hide();
+    $("#s4-ribbonrow").remove(); //sharepoint element
     //$("#s4-titlerow").hide();
     
     //Добавляем в элементы Шарика табы:
@@ -440,13 +453,13 @@ function prepareHtmlBefore(){ //before drawing tree, process and schema
     //"</div>"+
     "</div>";
     $( "#"+sharePointPlaceHolderId ).prepend(navDiv);
-    $( "#navDiv" ).tabs({active:0});
-    $( "#contentBox" ).tabs({active:0});
+    $( "#navDiv" ).tabs({active:0}); //navDiv - sharepoint element
+    $( "#contentBoxTabs" ).tabs({active:0});
 
     //Добавляем возможность менять ширину навигации и основного окна:
-    $("#DeltaPlaceHolderMain").attr("style","width:100% !important");
-    $("#contentBox").attr("style","display: flex !important");
-    $("#navDiv").resizable();    
+    $("#DeltaPlaceHolderMain").attr("style","width:100% !important"); //DeltaPlaceHolderMain - sharepoint element
+    $("#contentBox").attr("style","display: flex !important"); //contentBox - sharepoint element
+    $("#navDiv").resizable();    //navDiv - sharepoint element
     $("#CreateDiscussionThreadBtn").button();
      $( "#slider" ).slider({ //TODO: change to +/-
         min:50,
@@ -486,15 +499,15 @@ function prepareHtmlBefore(){ //before drawing tree, process and schema
     });
 
     try { 
-       $("#DeltaPageStatusBar").hide(); //Design tip for "This page was modified"
-       $("#zz12_TopNavigationMenu_NavMenu_Edit").hide(); //Design tip for "Change links"
+       $("#DeltaPageStatusBar").hide(); //Design tip for "This page was modified" ////DeltaPageStatusBar - sharepoint element
+       $("#zz12_TopNavigationMenu_NavMenu_Edit").hide(); //Design tip for "Change links" //DeltaPageStatusBar - sharepoint element
     }
     catch (e) {}
 }
 
 function prepareHtmlAfter() { //after new process or schema loaded
-    prepareSelectSchemaRadioButton(); 
-    $( "#contentBox" ).tabs({active:0});
+    if (schema.Url) prepareSelectSchemaRadioButton(); 
+    //$( "#contentBox" ).tabs({active:0});
     updateProjectTitles();
     $("#PrintButton").button();
 }
@@ -531,8 +544,9 @@ function drawSchema() {
         }
       } 
       else {
-        $("#canvas").html("There are no schema files related with this process. Add .bpmn file to the '" + schemasListName +
-        "' library and then set a value of any lookup fields of the process item in the '"+processListName+"' list");
+        // $("#canvas").html("There are no schema files related with this process. Add .bpmn file to the '" + schemasListName +
+        // "' library and then set a value of any lookup fields of the process item in the '"+processListName+"' list");
+        runEditor();
         return;
       }
       
@@ -558,26 +572,21 @@ function drawPicture_schema() {
     fitCanvas();
 }
 function makePrintVersion (){
-    $("#schemasSelector").remove();
-    $("#statusField").remove();
-    $("#fileInfo").remove();
     $("#PrintButton").remove();
     $('#contentBox').appendTo(document.head);
+    $('.ui-selectmenu-menu').appendTo(document.head);
+
     $(document.body.children).remove();
-    $( "<div class='PrintButton' onclick='document.location.reload(true)'>Close</div>" ).appendTo($("#toolBar"));
-    $( "<div class='PrintButton' onclick='window.print()'>Print</div>" ).appendTo($("#toolBar"));
-    $(".PrintButton").button();
+    $( "<div class='bpmnButton' onclick='document.location.reload(true)'>Close</div>" ).appendTo($("#toolBar"));
+    $( "<div class='bpmnButton' onclick='window.print()'>Print</div>" ).appendTo($("#toolBar"));
+    $(".bpmnButton").button();
     $('#contentBox').appendTo(document.body);
-    //$('#contentBox').width("100%").height("100%");
-    // $("#canvas").width("100%").
-    //         height(0.95*(window.innerHeight - $("#canvas").position().top) +"px").css("overflow","auto").
-    //         resizable();
+    $('.ui-selectmenu-menu').appendTo(document.body);
     var canvas = bpmnViewer.get('canvas');
     $("#canvas").height(canvas._cachedViewbox.inner.height).width(canvas._cachedViewbox.inner.width);
 }
 
 function drawBPMN_schema() {
-      
       // viewer instance
       bpmnViewer = new BpmnJS({ 
         container: '#canvas',
@@ -630,7 +639,11 @@ function drawBPMN_schema() {
             });
       }
       // load external diagram file via AJAX and open it
-      $.get(schema.Url, openDiagram, 'text');    
+      $.get(schema.Url, openDiagram, 'text');
+      if (document.getElementById('EditBtn')) {} else {
+        $("#toolBar").append("<div id='EditBtn' onclick='runEditor()' class='bpmnButton'>Edit schema</div>");
+        $("#EditBtn").button();
+      }
 }
 
 function fitCanvas() {
@@ -668,12 +681,6 @@ function displayGeneralDiscussion() {
             document.getElementById("frameForDisc").src = url;
             $("#CreateDiscussionThreadBtn").hide();
 
-            //  $("#frameForDisc").prepend("<div class='FileProperties'>"+
-            //     "<span class='DescriptionProperty'>Last editor ID:</span> "+data.d.results[0].EditorId +
-            //     "<span class='DescriptionProperty'>Created:</span> "+ data.d.results[0].Created +
-            //     "<a href= '"+data.d.results[0].OData__dlc_DocIdUrl.Url +"'> Open wikipage </a>"+
-            //     "</div>");
-
             return true;
         }
     }
@@ -685,14 +692,6 @@ function prepareSelectSchemaRadioButton() {
         $( "#schema-types" ).selectmenu( "destroy" );
     } catch (e) {}
 
-    var schemasTypes= [ //TODO: change to process.schemas
-        "to_be_descriptive_id",
-        "to_be_analytic_id",
-        "to_be_executable_id",
-        "as_is_descriptive_id",
-        "as_is_analytic_id",
-        "as_is_executable_id"
-    ];
     for (i=0;i<schemasTypes.length; i++) {
         var schemaFileId = process.schemas[schemasTypes[i]];
         var option = document.getElementById(schemasTypes[i]);
@@ -1098,13 +1097,18 @@ function getAndPostWikiContentPage() {
 
 
 function drawNewProcess(projectSearchID) {
-    process = null;
-    schema = null;
-    searchProcessInStructure(projectSearchID, processesStructure);
-    redrawSchema();
-    //updateProjectTitles();
-    prepareHtmlAfter();
-    updateUrl();  
+    if(bpmnModeler) {
+        window.location.href = window.location.pathname +"?IDdoc="+projectSearchID;
+    }
+    else {
+        process = null;
+        schema = null;
+        searchProcessInStructure(projectSearchID, processesStructure);
+        redrawSchema();
+        //updateProjectTitles();
+        prepareHtmlAfter();
+        updateUrl();  
+    }
 }
 
 function updateUrl() {
@@ -1167,16 +1171,24 @@ function getParameterByName(name, url) {
 
 function initiateGlobalPaths() {
     appUrl = window.location.pathname;
-    serviceURL = window.location.href.split("SitePages")[0]+"_vti_bin/Lists.asmx";
-    flatViewUrl = window.location.href.split("SitePages")[0] +"Lists/"+discussionsListName+"/Flat.aspx";
-    processPicUrl = window.location.href.split("SitePages")[0] +"Scripts/images/process.gif";
+    var webUrl = window.location.href.split("SitePages")[0];
+    serviceURL = webUrl+"_vti_bin/Lists.asmx";
+    copyServiceUrl = webUrl+"_vti_bin/Copy.asmx";
+    flatViewUrl = webUrl +"Lists/"+discussionsListName+"/Flat.aspx";
+    processPicUrl = webUrl +"Scripts/images/process.gif";
+    libraryRootFolderUrl = webUrl +"/" + schemasListName;
     try {
         var context = new SP.ClientContext;
         serviceURL = window.location.protocol + "//" + window.location.host +"/" + context.get_url() + "/_vti_bin/Lists.asmx";
+        serviceURL = window.location.protocol + "//" + window.location.host +"/" + context.get_url() + "/_vti_bin/Copy.asmx";
         flatViewUrl = window.location.protocol + "//" + window.location.host +"/" + context.get_url() + "/Lists/"+discussionsListName+"/Flat.aspx";
     } catch(e) {
         //console.log("Unable to initiate global paths through Sharepoint context (SP.ClientContext). Paths are calculated by url (some errors may occur) "+ e.message);
     }
+
+    var bpmnLibSchema = getListSchema(schemasListName);
+    var fieldSchema = $(bpmnLibSchema).find("Field[Name=Title]"); 
+    schemasTitleDisplayName = $(fieldSchema).attr("DisplayName");
 }
 	
 
@@ -1352,70 +1364,236 @@ function getContextInfo() {
     });
 }
 
+function runEditor() {
+    bpmnViewer = null;
+    $("#canvas").remove();
+        
+    var thisSciptPath = $($( "script[src*='/myBPMN.js']")[0]).attr("src"); //
+    var sourcesPath = thisSciptPath.split("/myBPMN.js")[0];
 
-// $(document).ready(function() {  
-//         SP.SOD.executeFunc('sp.js', 'SP.ClientContext', ViewItem);  
-//     });  
+    $('head').append($('<link rel="stylesheet" href="'+sourcesPath+'/app.css" type="text/css"/>'));
+    $('head').append($('<link rel="stylesheet" href="'+sourcesPath+'/diagram-js.css" type="text/css"/>'));
+    $('head').append($('<link rel="stylesheet" href="'+sourcesPath+'/diagram-js-minimap.css" type="text/css"/>'));
+    $('head').append($('<link rel="stylesheet" href="'+sourcesPath+'/bpmn-embedded.css" type="text/css"/>'));
+    $('head').append($('<link rel="stylesheet" href="'+sourcesPath+'/BPMN.css" type="text/css"/>')); //for viewer and editor
 
-// var oListViews;  
+    for (i=0;i<schemasTypes.length; i++) {
+            var option = document.getElementById(schemasTypes[i]);
+            option.disabled = false;
+            if (schema.Url) {}
+            else { //new file
+                if (schemasTypes[i]=="as_is_analytic_id" ) option.selected = true;    
+            }
+    }
+    
+    $( "#schema-types" ).selectmenu();
+    $('#SchemaTab').append($(htmlForEditor));     //contentRow
+    $('#SchemaTab').prepend($('<div id="saveButton" class="bpmnButton save_button" onclick="saveSchema()">Save and exit</div>'));//contentRow
+    $("#saveButton").button();
+    $('head').append($('<script src="'+sourcesPath+'/bpmn-custom-modeler.development.js"></script>'));
 
-// function createListView() {  
-//     //Get client context,web and list object   
-//     var clientContext = new SP.ClientContext();  
-//     var oWebsite = clientContext.get_web();  
-//     var oList = oWebsite.get_lists().getByTitle('ProcessesList');  
-//     //Set the view fields  
-//     var viewFields = new Array('Title');  
-//     var viewType = new SP.ViewType();  
-//     //Create view using ViewCreationInformation object   
-//     var creationInfo = new SP.ViewCreationInformation();  
-//     creationInfo.set_title("CustomProductView");  
-//     creationInfo.set_setAsDefaultView("true");  
-//     creationInfo.set_rowLimit("10");  
-//     creationInfo.set_personalView("false");  
-//     creationInfo.set_viewFields(viewFields);  
-//     //Set CAML query so that the view shows only a subset of items  
-//     var camlQuery = new SP.CamlQuery();  
-//     var query = "<Where><IsNotNull><FieldRef Name='ID' /></IsNotNull></Where>";  
-//     camlQuery.set_viewXml(query);  
-//     creationInfo.set_query(camlQuery);  
-//     oListViews = oList.get_views().add(creationInfo);  
-//     //Load the client context and execute the batch   
-//     clientContext.load(oListViews);  
-//     clientContext.executeQueryAsync(QuerySuccess, QueryFailure);  
-// }  
+    if (schema.Url) $("#EditBtn").remove();
+    
+}
 
-// function QuerySuccess() {  
-//     console.log("Views created successfully!");  
-// }  
 
-// function QueryFailure(sender, args) {  
-//     console.log('Request failed' + args.get_message());  
-// }
+function prepareFileName(filename) {
+    try {
+        return filename.replace(/\'/g, '').replace(/\r?\n/g, '').replace("\"","");
+    } catch (e) {
+        var currentdate = new Date(); 
+        var datetime = currentdate.getDay() + "."
+                + currentdate.getMonth()+ "."
+                + currentdate.getFullYear()+"_"
+                + currentdate.getHours() + "."  
+                + currentdate.getMinutes() + "." 
+                + currentdate.getSeconds();
+        return datetime;
+    }
+}
 
-// function ViewItem() {
-//     var context = new SP.ClientContext.get_current();
-//     var web = context.get_web();
-//     var list = web.get_lists().getByTitle('Disc');
 
-//     var query = SP.CamlQuery.createAllItemsQuery();
-//     allItems = list.getItems(query);
-//     context.load(allItems, 'Include(Title)');
+function saveSchema() {
+        bpmnModeler.saveXML({
+            format: true
+        }, function (err, xml) {
+            if (xml) {
+                if (schema.Url){ 
+                    UploadFile(xml, schema.Url, false, null);
+                } else {
+                    var webUrl = window.location.href.split("SitePages")[0];
+                    var schemaSelector = document.getElementById("schema-types");
+                    var newFileName = prepareFileName(document.title)+"_"+schemaSelector.selectedOptions[0].id +".bpmn";
+                    var newSchemaFileUrl = webUrl +schemasListName + "/"+ newFileName;
+                    UploadFile(xml, newSchemaFileUrl, true, newFileName);
+                }
+            }
+        });
+}
 
-//     context.executeQueryAsync(Function.createDelegate(this, this.success), Function.createDelegate(this, this.failed));
-// }
+var htmlForEditor =   "<div class='content with-diagram' id='js-drop-zone'>"+
+    "<div class='message intro'>"+
+      "<div class='note'>"+
+        "There is no BPMN-schema for this process. Drag and drop a schema from your desktop or <a id='js-create-diagram' href>create new one </a>."+
+      "</div>"+
+    "</div>"+
+    "<div class='message error'>"+
+      "<div class='note'>"+
+        "<p>Ooops, we could not display the BPMN 2.0 diagram.</p>"+
+        "<div class='details'>"+
+          "<span>Import Error Details</span>"+
+          "<pre></pre>"+
+        "</div>"+
+      "</div>"+
+    "</div>"+
+    "<div class='canvas' id='js-canvas'></div>"+
+    "<div class='properties-panel-parent' id='js-properties-panel'></div>"+
+  "</div>";
 
-// function success() {
-//     var TextFiled = "";
-//     var ListEnumerator = this.allItems.getEnumerator();
-//     $('#ProcessDescription').append('<ul>');
-//     while(ListEnumerator.moveNext()) {
-//         var currentItem = ListEnumerator.get_current();
-//         $('#ProcessDescription').append('<li>'+currentItem.get_item('Title') + '</li>\n');
-//     }
-//     $('#ProcessDescription').append('</ul>');
-// }
+var htmlForCreateNewFile = "<div class='newFileForm'>"+
 
-// function failed(sender, args) {
-//     alert("failed. Message:" + args.get_message());
-// }
+"</div>";
+
+
+ 
+// txtContent is a plain text, the content of our file
+// destinationUrl is the full path URL to the document library (with the filename included)
+// isNewFile - boolean is a file new or not
+// newFileName - a new file name (a part of destinationUrl)
+function UploadFile(txtContent, destinationUrl, isNewFile, newFileName) {
+    var jsStream = window.btoa(unescape(encodeURIComponent(txtContent))); //encode_b64(txtContent);
+    var soapEnv  = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                  +"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+                  +"<soap:Body>"
+                  +"<CopyIntoItems xmlns=\"http://schemas.microsoft.com/sharepoint/soap/\">"
+                  +"<SourceUrl>http://null</SourceUrl>"
+                  +"<DestinationUrls><string>"+destinationUrl+"</string></DestinationUrls>"
+                  +"<Fields>"
+                  +"<FieldInformation Type='File' />"
+                  +"<FieldInformation Type='Text' DisplayName='"+schemasTitleDisplayName+"' InternalName='Title' Value='"+newFileName+"' />"
+                  +"</Fields>"
+                  +"<Stream>"+jsStream+"</Stream>"
+                  +"</CopyIntoItems>"
+                  +"</soap:Body>"
+                  +"</soap:Envelope>";
+    jQuery.ajax({
+        url: copyServiceUrl,
+        type: "POST",
+        dataType: "xml",
+        data: soapEnv,
+        beforeSend: function(xhr) { xhr.setRequestHeader('SOAPAction', 'http://schemas.microsoft.com/sharepoint/soap/CopyIntoItems'); },
+        contentType: "text/xml; charset=\"utf-8\""
+    }).done(function( data ) {
+        console.log(data);
+        if (isNewFile) {
+            getFileIdAndUpdateProcessListItem(newFileName);
+        } else {
+            window.location.reload();
+        }
+    });
+}
+
+
+function getFileIdAndUpdateProcessListItem (newFileName) {
+
+    //Getting ID of new file
+    var queryString = "<Where><Eq><FieldRef Name='FileLeafRef'/><Value Type='File'>" + newFileName + "</Value></Eq></Where>";
+    var viewFields = "<FieldRef Name='ID'/>";
+    var rows = getSPListItems(schemasListName, queryString, viewFields);
+    var $row = $(rows[0]);
+    var ows_FileLeafRef = $row.attr("ows_FileLeafRef"); //ID;#fileName,  like 139;#Архивирование документов по рейсам МТ НТК_as_is_analytic_id.bpmn //Works only if auto-setting title was succesfull
+
+    //Updating lookup field in the related process item
+    var fieldName="";
+    var schemaSelector = document.getElementById("schema-types");
+    switch(schemaSelector.selectedOptions[0].id) {
+        case "as_is_descriptive_id":  
+            fieldName = "Schema_as_is_d";
+        break;
+        case "as_is_analytic_id":
+            fieldName = "Schema_as_is";
+        break;
+        case "as_is_executable_id":
+            fieldName = "Schema_as_is_e";
+        break;
+        case "to_be_descriptive_id":
+            fieldName = "Schema_to_be_d";
+        break;
+        case "to_be_analytic_id":
+            fieldName = "Schema_to_be";
+        break;
+        case "to_be_executable_id":
+            fieldName = "Schema_to_be_e";
+        break;
+    }
+    var updateFields= "<Field Name='ID'>"+process.id+"</Field>" +
+                    "<Field Name='"+fieldName+"'>" + ows_FileLeafRef + "</Field>";
+    updateSPListItems(processListName, updateFields);
+
+    window.location.reload();
+}
+
+//Wrapper for SP-web-service Lists.asmx/UpdateListItems 
+function updateSPListItems(listName, updateFields) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', serviceURL, false); //here was serviceUrl instead of "../_vti_bin/Lists.asmx"
+    strXML = "<?xml version='1.0' encoding='utf-8'?>"+
+    "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://schemas.xmlsoap.org/soap/envelope/'>"+
+    "<soap12:Body>"+
+    "<UpdateListItems xmlns='http://schemas.microsoft.com/sharepoint/soap/'>"+
+                "<listName>"+listName+"</listName>"+
+                "<updates>"+
+                    "<Batch OnError='Continue'>"+// ListVersion='0'>"+
+                        "<Method ID='2' Cmd='Update'>"+
+                        updateFields+
+                            /*<Field Name="ID">'+ciid+'</Field>' +
+                            <Field Name="BidStatus">Archived</Field>'+*/
+                        "</Method>"+
+                    "</Batch>"+
+                "</updates>"+
+            "</UpdateListItems>"+
+    "</soap12:Body>"+
+    "</soap12:Envelope>";
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml; charset=\"utf-8\"');
+    xmlhttp.setRequestHeader('SOAPAction', 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems');
+    
+    
+    xmlhttp.send(strXML);
+    if(xmlhttp.status == 200) {
+        var response = xmlhttp.responseText ;
+        // xmlDoc = $.parseXML(response);
+        // $xml = $( xmlDoc );
+        // return $xml.find("z\\:row, row"); //эта нужно для разных браузеров, вроде бы Хром ищет по row, а остальные по z\\:row.
+    } else {
+        console.log("Web-service returns error!");
+        console.log("Status: "+ xmlhttp.status);
+        console.log("Response text: " + xmlhttp.responseText);
+    }
+}
+
+function getListSchema(listName) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', serviceURL, false); //here was serviceUrl instead of "../_vti_bin/Lists.asmx"
+    strXML = "<?xml version='1.0' encoding='utf-8'?>"+
+    "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://schemas.xmlsoap.org/soap/envelope/'>"+
+    "<soap12:Body>"+
+        "<GetList xmlns='http://schemas.microsoft.com/sharepoint/soap/'>"+
+                "<listName>"+listName+"</listName>"+
+        "</GetList>"+
+    "</soap12:Body>"+
+    "</soap12:Envelope>";
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml; charset=\"utf-8\"');
+    xmlhttp.setRequestHeader('SOAPAction', 'http://schemas.microsoft.com/sharepoint/soap/GetList');
+    
+    
+    xmlhttp.send(strXML);
+    if(xmlhttp.status == 200) {
+        var response = xmlhttp.responseText ;
+        xmlDoc = $.parseXML(response);
+        return xmlDoc; //returns all schema. To find field element parse like this: $(xmlDoc).find("Field[Name=Title]");
+    } else {
+        console.log("Web-service Lists.asmx/GetList returns error");
+        console.log("Status: "+ xmlhttp.status);
+        console.log("Response text: " + xmlhttp.responseText);
+    }
+}

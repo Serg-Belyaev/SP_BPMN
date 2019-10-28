@@ -61,7 +61,7 @@ So, all scripts in SP13 will work in IE-10 campatipility mode (like WYSIWYG-edit
 
 </asp:Content>
 <asp:Content ContentPlaceHolderId="PlaceHolderMain" runat="server">
-<div id="contentBox">
+<div id="contentBoxTabs">
 
 <ul>
 	<li><a href='#SchemaTab'>Schema</a></li>
@@ -85,7 +85,7 @@ So, all scripts in SP13 will work in IE-10 campatipility mode (like WYSIWYG-edit
 		 	      <option id="to_be_executable_id" disabled="true">TO BE: 
 					executable</option>
 		    	</select></fieldset><div id="statusField"></div>
-		    <div id="PrintButton" class='PrintButton' onclick='makePrintVersion()'>
+		    <div id="PrintButton" class='bpmnButton' onclick='makePrintVersion()'>
 				Full screen</div>
 			<div id="slider"></div>
 		</div>

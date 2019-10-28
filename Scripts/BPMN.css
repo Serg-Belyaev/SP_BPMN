@@ -3,6 +3,17 @@
   padding: 0;
   margin: 0;
 }
+#SchemaTab{
+  height: 1000px;
+}
+#js-drop-zone {
+  height: 700px !important;
+  border: 1px solid lightblue;
+}
+
+#saveButton {
+  float: left;
+}
 #frame {
   width: 95%; 
   height: 110%;
@@ -93,7 +104,7 @@ div.diagram-add-comment:hover {
   stroke: #FF8888;
   stroke-width: 1px;
 }
-div.PrintButton {
+div.bpmnButton {
   /*width: 150px;
   border: 1px solid navy;
   padding: 5px;
